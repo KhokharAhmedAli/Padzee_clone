@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Padzee Clone - Notepad with Username</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    header {
+      background: #333;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header input {
+      padding: 5px;
+      font-size: 1rem;
+    }
+    .editor-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+    }
+    textarea {
+      flex: 1;
+      width: 100%;
+      background: #2d2d2d;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      font-family: monospace;
+      font-size: 1rem;
+      resize: none;
+      height: 100%;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span>Padzee Notepad</span>
+    <input type="text" id="username" placeholder="Enter Username" />
+  </header>
+
+  <div class="editor-container">
+    <textarea id="notepad" placeholder="Write your code or notes here..."></textarea>
+    <button onclick="saveNote()">Save Note</button>
+    <button onclick="loadNote()">Load Note</button>
+  </div>
+
+  <script>
+    const textarea = document.getElementById("notepad");
+    const usernameInput = document.getElementById("username");
+
+    function saveNote() {
+      const username = usernameInput.value.trim();
+      if (!username) {
+        alert("Please enter a username to save your file.");
+        return;
+      }
+      localStorage.setItem(`padzee_note_${username}`, textarea.value);
+      alert("Note saved for user: " + username);
+    }
+
+    function loadNote() {
+      const username = usernameInput.value.trim();
+      if (!username) {
+        alert("Please enter a username to load the note.");
+        return;
+      }
+      const saved = localStorage.getItem(`padzee_note_${username}`);
+      if (saved) {
+        textarea.value = saved;
+        alert("Note loaded for user: " + username);
+      } else {
+        alert("No saved note found for user: " + username);
+        textarea.value = "";
+      }
+    }
+
+    usernameInput.addEventListener("input", () => {
+      const username = usernameInput.value.trim();
+      const saved = localStorage.getItem(`padzee_note_${username}`);
+      if (saved) {
+        textarea.value = saved;
+      } else {
+        textarea.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
